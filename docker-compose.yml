@@ -1,0 +1,94 @@
+services:
+  # PostgreSQL 数据库
+  postgres:
+    image: postgres:15-alpine
+    container_name: study_helper_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: study_helper
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/init-db:/docker-entrypoint-initdb.d
+    networks:
+      - study_helper_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis 缓存
+  redis:
+    image: redis:6-alpine
+    container_name: study_helper_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - study_helper_network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI 后端
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: study_helper_backend
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/study_helper
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      GUIJI_API_KEY: sk-wgffeealqezrbzdcycwqimxffvhypuqjzqfirmdpndmdcstl
+      GUIJI_API_BASE: https://api.siliconflow.cn/v1
+      GUIJI_MODEL: THUDM/GLM-4.1V-9B-Thinking
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - study_helper_network
+    restart: unless-stopped
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Node.js BFF 层
+  bff:
+    build:
+      context: ./bff
+      dockerfile: Dockerfile
+    container_name: study_helper_bff
+    environment:
+      BACKEND_URL: http://backend:8000
+      BFF_PORT: 3000
+      JWT_SECRET: your-secret-key-change-in-production
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - study_helper_network
+    restart: unless-stopped
+    command: npm run dev
+
+networks:
+  study_helper_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
