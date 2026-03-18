@@ -30,9 +30,9 @@ class Settings(BaseSettings):
     # 硅基流动 API 配置
     GUIJI_API_KEY: str = "sk-wgffeealqezrbzdcycwqimxffvhypuqjzqfirmdpndmdcstl"
     GUIJI_API_BASE: str = "https://api.siliconflow.cn/v1"
-    GUIJI_MODEL: str = "THUDM/GLM-4.1V-9B-Thinking"
-    GUIJI_TEMPERATURE: float = 0.7
-    GUIJI_MAX_TOKENS: int = 2048
+    GUIJI_MODEL: str = "Qwen/Qwen2.5-VL-72B-Instruct"  # 使用 Qwen 视觉模型（GLM 模型不可用）
+    GUIJI_TEMPERATURE: float = 0.5  # 降低到 0.5，输出更稳定
+    GUIJI_MAX_TOKENS: int = 1024  # 降低到 1024，减少生成时间
 
     # CORS 配置
     ALLOWED_ORIGINS: str = "*"

@@ -25,7 +25,7 @@
 - **缓存/会话**: Redis
 
 ### AI 模型
-- **视觉模型**: THUDM/GLM-4.1V-9B-Thinking (硅基流动)
+- **视觉模型**: Qwen/Qwen2.5-VL-72B-Instruct（通义千问视觉语言模型，硅基流动）
 - **OCR**: 集成在视觉模型中
 
 ## 📁 项目结构
@@ -77,13 +77,18 @@ study-helper/
 - ✅ PostgreSQL + Redis 数据库配置
 - ✅ 用户认证系统（注册/登录/JWT）
 - ✅ 数据库迁移和初始化
+- ✅ 题目识别功能（硅基流动视觉模型）
+- ✅ 解题 Agent（LangChain create_agent）
+- ✅ 对话式追问功能（最多 10 次）
+- ✅ 知识点自动提取
+- ✅ 类似题目生成
+- ✅ 题目 Repository 数据访问层
 
 ### 开发中
-- ⏸️ 题目识别功能
-- ⏸️ 对话式追问功能
 - ⏸️ 错题集功能
 - ⏸️ 课件上传功能
 - ⏸️ 移动端 UI 开发
+- ⏸️ BFF 层路由转发
 
 ## 🛠️ 快速开始
 
@@ -204,7 +209,7 @@ SECRET_KEY=your-secret-key-change-in-production
 # 硅基流动 API
 GUIJI_API_KEY=sk-wgffeealqezrbzdcycwqimxffvhypuqjzqfirmdpndmdcstl
 GUIJI_API_BASE=https://api.siliconflow.cn/v1
-GUIJI_MODEL=THUDM/GLM-4.1V-9B-Thinking
+GUIJI_MODEL=Qwen/Qwen2.5-VL-72B-Instruct
 ```
 
 #### BFF 配置

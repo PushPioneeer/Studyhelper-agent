@@ -214,7 +214,7 @@ SECRET_KEY=your-secret-key-change-in-production
 # 硅基流动 API
 GUIJI_API_KEY=sk-wgffeealqezrbzdcycwqimxffvhypuqjzqfirmdpndmdcstl
 GUIJI_API_BASE=https://api.siliconflow.cn/v1
-GUIJI_MODEL=THUDM/GLM-4.1V-9B-Thinking
+GUIJI_MODEL=Qwen/Qwen2.5-VL-72B-Instruct
 ```
 
 ### BFF 环境

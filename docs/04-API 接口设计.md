@@ -479,7 +479,7 @@ async def process_question_upload(question_id: str, image_url: str):
     llm = ChatOpenAI(
         base_url="https://api.siliconflow.cn/v1",
         api_key="sk-wgffeealqezrbzdcycwqimxffvhypuqjzqfirmdpndmdcstl",
-        model="THUDM/GLM-4.1V-9B-Thinking",
+        model="Qwen/Qwen2.5-VL-72B-Instruct",
         temperature=0.7,
         max_tokens=2048,
     )
@@ -591,7 +591,7 @@ with open("question.jpg", "rb") as f:
 
 # 构建请求
 data = {
-    "model": "THUDM/GLM-4.1V-9B-Thinking",
+    "model": "Qwen/Qwen2.5-VL-72B-Instruct",
     "messages": [
         {
             "role": "user",
